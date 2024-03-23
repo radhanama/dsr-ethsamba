@@ -1,0 +1,33 @@
+.home_container {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  height: calc(100vh - 140px);
+}
+
+.home_container img {
+  position: absolute;
+  height: 700px;
+  bottom: 0;
+  right: 0;
+}
+
+.title {
+  width: 500px;
+  margin: 80px 0 0 80px;
+}
+
+.title h1 {
+  font-size: 100px;
+  line-height: 90px;
+}
+
+.description {
+  width: 800px;
+  margin: 40px 0 0 80px;
+}
+
+.description p {
+  font-size: 32px;
+  font-weight: 200;
+}
