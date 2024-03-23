@@ -11,13 +11,12 @@ class SoftwareRegistryService {
     this.status = 'Conexão estabelecida com sucesso (simulado)';
   }
 
-  async createRecord(combinatedFilesHash, ipfsCid, authorName, authorEmail) {
+  async createRecord(combinatedFilesHash, authorName, authorEmail) {
     // Simulated creation of record
     const timestamp = Date.now();
     const newRecord = {
       owner: '0x1234567890123456789012345678901234567890',
       sha256Hash: combinatedFilesHash,
-      ipfsCid: ipfsCid,
       authorName: authorName,
       authorEmail: authorEmail,
       blockTimestamp: timestamp
