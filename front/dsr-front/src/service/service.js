@@ -48,13 +48,10 @@ class SoftwareRegistryService {
   }
 
   byteArrayToString(byteArray) {
-    let result = '';
-
-    for (let i = 0; i < byteArray.length; i++) {
-      const hex = byteArray[i].toString(16);
-      result += (hex.length === 1 ? '0' : '') + hex;
+    var result = "";
+    for (var i = 0; i < array.length; i++) {
+      result += String.fromCharCode(parseInt(array[i], 2));
     }
-
     return result;
   }
 
