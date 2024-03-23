@@ -47,6 +47,17 @@ class SoftwareRegistryService {
     return result
   }
 
+  byteArrayToString(byteArray) {
+    let result = '';
+
+    for (let i = 0; i < byteArray.length; i++) {
+      const hex = byteArray[i].toString(16);
+      result += (hex.length === 1 ? '0' : '') + hex;
+    }
+
+    return result;
+  }
+
   async createRecord(
     combinatedFilesHash,
     description,
@@ -82,7 +93,7 @@ class SoftwareRegistryService {
   async getRecordByHash(sha256Hash) {
     if (!this.contract) return {}
     try {
-      const record = await this.contract.getRecordByHash(sha256Hash)
+      const record = await this.contract.getRecordByHash(this.stringToByteArray(sha256Hash))
       return record
     } catch (error) {
       console.error('Erro ao obter registro por hash:', error)
