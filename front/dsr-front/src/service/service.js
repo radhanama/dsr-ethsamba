@@ -53,7 +53,6 @@ class SoftwareRegistryService {
     authorName,
     authorEmail
   ) {
-    debugger
     if (!this.contract) return
     try {
       await this.contract.createRecord(

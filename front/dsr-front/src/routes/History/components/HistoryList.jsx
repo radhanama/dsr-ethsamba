@@ -1,28 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import HistoryItem from './HistoryItem'
 import styles from './HistoryList.module.css'
 
-function HistoryList() {
+function HistoryList({ SoftwareRegistryService }) {
   const [filter, setFilter] = useState('')
+  const [historyList, setHistoryList] = useState([])
 
-  const historyList = [
-    {
-      owner: 'daniel',
-      sha256Hash: 'm12bdi028742x',
-      description: 'daniel muito lindo',
-      authorName: 'danielMT',
-      authorEmail: 'daniel',
-      blockTimestamp: '12/12/2012'
-    },
-    {
-      owner: 'RR Soares',
-      sha256Hash: 'jsdabdjabd-2308149u1290',
-      description: 'genio da bola',
-      authorName: 'radhanama',
-      authorEmail: 'radha',
-      blockTimestamp: '02/02/2002'
+  useEffect(() => {
+    const getHistoryData = async () => {
+      const data = await SoftwareRegistryService.getLastNRecords(1)
+      setHistoryList(data)
+      console.log(data)
     }
-  ]
+
+    getHistoryData()
+  }, [])
 
   const filteredHistory = historyList.filter(todo => {
     // Verifica se alguma das chaves do objeto contém o valor do filtro

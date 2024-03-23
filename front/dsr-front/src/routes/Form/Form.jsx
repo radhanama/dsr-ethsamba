@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from './Form.module.css'
 
-const Form = () => {
+const Form = ({ SoftwareRegistryService }) => {
   const [formData, setFormData] = useState({
     hash: '',
     description: '',
@@ -17,10 +17,18 @@ const Form = () => {
     })
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
     // Enviar do jeito que for pra blockchain
     console.log(formData)
+    const { hash, description, authorName, authorEmail } = formData
+
+    await SoftwareRegistryService.createRecord(
+      hash,
+      description,
+      authorName,
+      authorEmail
+    )
   }
 
   // Verifica se todos os campos estão preenchidos
