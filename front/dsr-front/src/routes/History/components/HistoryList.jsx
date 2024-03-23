@@ -3,49 +3,74 @@ import HistoryItem from './HistoryItem'
 import styles from './HistoryList.module.css'
 
 function HistoryList({ SoftwareRegistryService }) {
-  const [filter, setFilter] = useState('')
+  const [owner, setOwner] = useState('')
+  const [hash, setHash] = useState('')
+  const [handleClick, setHandleClick] = useState(false)
   const [historyList, setHistoryList] = useState([])
 
-  useEffect(() => {
-    const getHistoryData = async () => {
-      const data = await SoftwareRegistryService.getLastNRecords(1)
-      setHistoryList(data)
-      console.log(data)
+  const getHistoryData = async (owner, hash) => {
+    let data = []
+
+    if (owner.length > 0) {
+      console.log('owner')
+      data = await SoftwareRegistryService.getRecordsByOwner(owner)
+    } else if (hash.length > 0) {
+      console.log('hash')
+      data = await SoftwareRegistryService.getRecordByHash(hash)
+    } else {
+      console.log('else')
+      data = await SoftwareRegistryService.getLastNRecords(2)
     }
 
-    getHistoryData()
-  }, [])
+    setHistoryList(data)
+    console.log(data)
+  }
 
-  const filteredHistory = historyList.filter(todo => {
-    // Verifica se alguma das chaves do objeto contém o valor do filtro
-    return Object.values(todo).some(
-      value =>
-        typeof value === 'string' &&
-        value.toLowerCase().includes(filter.toLowerCase())
-    )
-  })
+  useEffect(() => {
+    getHistoryData(owner, hash)
+  }, [handleClick])
+
+  const handleClickSubmit = () => {
+    setHandleClick(!handleClick)
+  }
 
   return (
     <div className={styles.history_list_container}>
       <div className={styles.filter}>
         <label className={styles.input_label} htmlFor="hash">
-          Search for any property
+          Search owner
         </label>
-        <input
-          type="text"
-          id="filter"
-          placeholder="ex. 0bc57642b3cc041a76705d171c2afe66821e98101c7fd4cd23331c17ecb186a9"
-          value={filter}
-          onChange={e => setFilter(e.target.value)}
-        />
+        {hash.length === 0 ? (
+          <input
+            type="text"
+            id="owner"
+            placeholder="ex. 0bc57642b3cc041a76705d171c2afe66821e98101c7fd4cd23331c17ecb186a9"
+            value={owner}
+            onChange={e => setOwner(e.target.value)}
+          />
+        ) : null}
       </div>
-      {filteredHistory.length > 0
-        ? filteredHistory.map((item, index) => (
-            <HistoryItem key={index} item={item} />
-          ))
-        : historyList.map((item, index) => (
-            <HistoryItem key={index} item={item} />
-          ))}
+
+      <div className={styles.filter}>
+        <label className={styles.input_label} htmlFor="hash">
+          Search hash
+        </label>
+        {owner.length === 0 ? (
+          <input
+            type="text"
+            id="hash"
+            placeholder="ex. 0bc57642b3cc041a76705d171c2afe66821e98101c7fd4cd23331c17ecb186a9"
+            value={hash}
+            onChange={e => setHash(e.target.value)}
+          />
+        ) : null}
+      </div>
+      {historyList.map((item, index) => (
+        <HistoryItem key={index} item={item} />
+      ))}
+      <div>
+        <button onClick={handleClickSubmit}>clica aqui</button>
+      </div>
     </div>
   )
 }
