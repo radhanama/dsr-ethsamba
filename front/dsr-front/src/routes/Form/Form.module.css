@@ -1,0 +1,40 @@
+.formContainer {
+  width: 600px;
+  height: 70vh;
+  margin: 100px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #696969;
+  border-radius: 30px;
+}
+
+.inputRow {
+  margin-bottom: 20px;
+}
+
+.input_label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+}
+
+.form_button {
+  margin-top: 20px;
+  width: 300px;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.form_button:hover {
+  background-color: #0056b3;
+}
