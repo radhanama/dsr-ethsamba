@@ -69,7 +69,9 @@ function HistoryList({ SoftwareRegistryService }) {
         <HistoryItem key={index} item={item} />
       ))}
       <div>
-        <button onClick={handleClickSubmit}>clica aqui</button>
+        <button className={styles.button_get} onClick={handleClickSubmit}>
+          search
+        </button>
       </div>
     </div>
   )

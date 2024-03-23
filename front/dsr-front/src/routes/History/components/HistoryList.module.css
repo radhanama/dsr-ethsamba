@@ -14,3 +14,14 @@
 .filter input {
   margin-right: 10px;
 }
+
+.button_get {
+  margin-top: 20px;
+  width: 300px;
+  padding: 10px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+}

@@ -6,8 +6,9 @@
 }
 
 .home_container img {
+  z-index: -2;
   position: absolute;
-  height: 700px;
+  height: 600px;
   bottom: 0;
   right: 0;
 }

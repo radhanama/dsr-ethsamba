@@ -26,7 +26,7 @@ function Navbar({ SoftwareRegistryService }) {
 
         <Link to="/history">
           <li>
-            <h1>history</h1>
+            <h1>History</h1>
           </li>
         </Link>
 
