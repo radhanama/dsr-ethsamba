@@ -27,7 +27,7 @@ describe("SoftwareRegistry", function () {
         return { softwareRegistry, sampleRecord, hashString, stringToByteArray, addr0, addr1, addr2 };
     }
 
-    it("Should returns the newly added registration", async function () {
+    it("CreateRecord() should returns the newly added registration", async function () {
         const { softwareRegistry, sampleRecord, hashString, addr0 } = await loadFixture(
             deploySoftwareResgistryFixture);
 
@@ -48,7 +48,7 @@ describe("SoftwareRegistry", function () {
             sampleRecord.authorEmail]);
     })
 
-    it("Should fail because hash is invalid", async function () {
+    it("CreateRecord() should fail because of invalid hash", async function () {
         const { softwareRegistry, sampleRecord, stringToByteArray } = await loadFixture(
             deploySoftwareResgistryFixture);
 
@@ -59,7 +59,7 @@ describe("SoftwareRegistry", function () {
             sampleRecord.authorEmail)).to.be.revertedWith("Invalid SHA256 hash");
     })
 
-    it("Should fail because description is too long", async function () {
+    it("CreateRecord() should fail because description is too long", async function () {
         const { softwareRegistry, sampleRecord } = await loadFixture(
             deploySoftwareResgistryFixture);
 
@@ -72,7 +72,7 @@ describe("SoftwareRegistry", function () {
             sampleRecord.authorEmail)).to.be.revertedWith("Description exceeds max length");
     })
 
-    it("Should fail because authorName is too long", async function () {
+    it("CreateRecord() should fail because authorName is too long", async function () {
         const { softwareRegistry, sampleRecord } = await loadFixture(
             deploySoftwareResgistryFixture);
 
@@ -83,7 +83,7 @@ describe("SoftwareRegistry", function () {
             sampleRecord.authorEmail)).to.be.revertedWith("Author name exceeds max length");
     })
 
-    it("Should fail because authorEmail is too long", async function () {
+    it("CreateRecord() should fail because authorEmail is too long", async function () {
         const { softwareRegistry, sampleRecord } = await loadFixture(
             deploySoftwareResgistryFixture);
 
@@ -93,5 +93,25 @@ describe("SoftwareRegistry", function () {
             sampleRecord.authorName,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor viverra tortor."
         )).to.be.revertedWith("Author email exceeds max length");
+    })
+
+    it("GetLastNRecords() should fail because of invalid n", async function () {
+        const { softwareRegistry, sampleRecord, hashString, addr0 } = await loadFixture(
+            deploySoftwareResgistryFixture);
+
+        await softwareRegistry.createRecord(sampleRecord.hash,
+            sampleRecord.description, sampleRecord.authorName, sampleRecord.authorEmail);
+
+        await expect(softwareRegistry.getLastNRecords(
+            0)).to.be.revertedWith("Invalid number of records");
+        expect((await softwareRegistry.getLastNRecords(
+            1))[0].slice(0, -1)).to.deep.equals([
+                addr0.address,
+                "0x" + hashString,
+                sampleRecord.description,
+                sampleRecord.authorName,
+                sampleRecord.authorEmail]);
+        await expect(softwareRegistry.getLastNRecords(
+            2)).to.be.revertedWith("Invalid number of records");
     })
 });

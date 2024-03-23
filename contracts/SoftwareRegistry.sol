@@ -80,4 +80,17 @@ contract SoftwareRegistry {
 
         return _records[recordIndex - 1];
     }
+
+    function getLastNRecords(uint256 n) public view returns (Record[] memory) {
+        require(n > 0 && n <= _records.length && n <= 100, "Invalid number of records");
+
+        Record[] memory lastNRecords = new Record[](n);
+        uint256 startIndex = _records.length - n;
+
+        for (uint256 i = 0; i < n; i++) {
+            lastNRecords[i] = _records[startIndex + i];
+        }
+
+        return lastNRecords;
+    }
 }
