@@ -1,59 +1,91 @@
+import { ethers } from 'ethers';
+import SoftwareRegistryContract from '../assets/contracts/SoftwareRegistry.json';
+
 class SoftwareRegistryService {
   constructor() {
-    this.records = [];
-    this.ownerRecordsMap = {};
-    this.hashRecordMap = {};
+    this.provider = null;
+    this.contract = null;
+    this.signer = null;
+    this.accounts = [];
     this.status = '';
   }
 
   async connectBlockchain() {
-    // Simulated connection to blockchain
-    this.status = 'Conexão estabelecida com sucesso (simulado)';
-  }
-
-  async createRecord(combinatedFilesHash, authorName, authorEmail) {
-    // Simulated creation of record
-    const timestamp = Date.now();
-    const newRecord = {
-      owner: '0x1234567890123456789012345678901234567890',
-      sha256Hash: combinatedFilesHash,
-      authorName: authorName,
-      authorEmail: authorEmail,
-      blockTimestamp: timestamp
-    };
-    const recordsSize = this.records.length;
-    this.records.push(newRecord);
-    if (!this.ownerRecordsMap[newRecord.owner]) {
-      this.ownerRecordsMap[newRecord.owner] = [];
+    try {
+      this.provider = new ethers.BrowserProvider(window.ethereum); // Use browser provider
+      await this.provider.send("eth_requestAccounts", []); // Request MetaMask accounts
+      this.signer = await this.provider.getSigner();
+      this.accounts = await this.provider.listAccounts();
+      const deployedNetwork = "0xAc089b14eb458A5c33F204B315336b4C41Af67bd";
+      this.contract = new ethers.Contract(
+        deployedNetwork,
+        SoftwareRegistryContract.abi,
+        this.provider
+      ).connect(this.signer);
+      this.status = 'Conexão estabelecida com sucesso';
+    } catch (error) {
+      console.error('Erro ao conectar à rede Ethereum. Verifique se o MetaMask está instalado e conectado.');
+      this.status = 'Erro ao conectar à rede Ethereum';
     }
-    this.ownerRecordsMap[newRecord.owner].push(recordsSize);
-    this.hashRecordMap[newRecord.sha256Hash] = recordsSize;
-    this.status = 'Registro criado com sucesso (simulado)';
   }
 
-  async transferOwnership(hashRecord, newOwner) {
-    // Simulated transfer of ownership
-    const record = this.records[hashRecord];
-    if (record) {
-      record.owner = newOwner;
-      this.status = 'Propriedade transferida com sucesso (simulado)';
-    } else {
-      this.status = 'Erro ao transferir propriedade (simulado)';
+  stringToByteArray(inputString) {
+    const result = new Uint8Array(inputString.length / 2);
+
+    for (let i = 0; i < inputString.length; i += 2) {
+      result[i / 2] = parseInt(inputString.substr(i, 2), 16);
+    }
+
+    return result;
+  }
+
+  async createRecord(combinatedFilesHash, description, authorName, authorEmail) {
+    debugger
+    if (!this.contract) return;
+    try {
+      await this.contract.createRecord(
+        this.stringToByteArray(combinatedFilesHash),
+        description,
+        authorName,
+        authorEmail
+      );
+      this.status = 'Registro criado com sucesso';
+    } catch (error) {
+      console.error('Erro ao criar registro:', error);
+      this.status = 'Erro ao criar registro';
     }
   }
 
   async getRecordsByOwner(ownerAddress) {
-    // Simulated retrieval of records by owner
-    return this.ownerRecordsMap[ownerAddress] || [];
+    if (!this.contract) return [];
+    try {
+      const records = await this.contract.getRecordsByOwner(ownerAddress);
+      return records;
+    } catch (error) {
+      console.error('Erro ao obter registros por proprietário:', error);
+      return [];
+    }
   }
 
   async getRecordByHash(sha256Hash) {
-    // Simulated retrieval of record by hash
-    const recordIndex = this.hashRecordMap[sha256Hash];
-    if (recordIndex !== undefined) {
-      return this.records[recordIndex];
-    } else {
-      return null;
+    if (!this.contract) return {};
+    try {
+      const record = await this.contract.getRecordByHash(sha256Hash);
+      return record;
+    } catch (error) {
+      console.error('Erro ao obter registro por hash:', error);
+      return {};
+    }
+  }
+
+  async getLastNRecords(n) {
+    if (!this.contract) return [];
+    try {
+      const records = await this.contract.getLastNRecords(n);
+      return records;
+    } catch (error) {
+      console.error('Erro ao obter os últimos registros:', error);
+      return [];
     }
   }
 }
