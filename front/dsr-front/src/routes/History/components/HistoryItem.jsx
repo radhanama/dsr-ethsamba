@@ -16,7 +16,7 @@ const HistoryItem = ({ item }) => {
       <div className={styles.rectangle}>
         <div className={styles.info}>
           <p>Owner: {owner}</p>
-          <p>SHA256 Hash: {sha256Hash}</p>
+          <p>SHA256 Hash: {sha256Hash?.replace('0x', '')}</p>
           <p>Description: {description}</p>
           <p>Author Name: {authorName}</p>
           <p>Author Email: {authorEmail}</p>

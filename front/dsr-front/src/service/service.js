@@ -47,12 +47,12 @@ class SoftwareRegistryService {
     return result
   }
 
-  byteArrayToString(byteArray) {
-    var result = "";
+  byteArrayToString(array) {
+    var result = ''
     for (var i = 0; i < array.length; i++) {
-      result += String.fromCharCode(parseInt(array[i], 2));
+      result += String.fromCharCode(parseInt(array[i], 2))
     }
-    return result;
+    return result
   }
 
   async createRecord(
@@ -88,13 +88,16 @@ class SoftwareRegistryService {
   }
 
   async getRecordByHash(sha256Hash) {
-    if (!this.contract) return {}
+    if (!this.contract) return []
     try {
-      const record = await this.contract.getRecordByHash(this.stringToByteArray(sha256Hash))
-      return record
+      const record = await this.contract.getRecordByHash(
+        this.stringToByteArray(sha256Hash)
+      )
+      console.log(record)
+      return [record]
     } catch (error) {
       console.error('Erro ao obter registro por hash:', error)
-      return {}
+      return []
     }
   }
 
