@@ -10,12 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@truffle/contract": "^4.6.31",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
-    "sort-by": "^1.2.0"
+    "sort-by": "^1.2.0",
+    "web3": "^4.6.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
