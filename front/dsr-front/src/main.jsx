@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import Home from './routes/Home/Home.jsx'
 import History from './routes/History/History.jsx'
+import Form from './routes/Form/Form.jsx'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: '/history',
         element: <History />
+      },
+      {
+        path: '/form',
+        element: <Form />
       }
     ]
   }
