@@ -3,12 +3,15 @@ import styles from './Navbar.module.css'
 import { Link } from 'react-router-dom'
 import icon from '../../assets/earth-emoji-bw.png'
 
-function Navbar() {
+function Navbar({ SoftwareRegistryService }) {
   // Função pra simular o caso o usuario já esteja logado
   const [logged, isLogged] = useState(false)
 
-  const toggleLoggedState = () => {
-    isLogged(!logged)
+  const toggleLoggedState = async () => {
+    if (logged) return
+
+    await SoftwareRegistryService.connectBlockchain()
+    isLogged(SoftwareRegistryService.isLogged())
   }
 
   return (
@@ -26,6 +29,14 @@ function Navbar() {
             <h1>history</h1>
           </li>
         </Link>
+
+        {logged ? (
+          <Link to="/form">
+            <li>
+              <h1>Registration</h1>
+            </li>
+          </Link>
+        ) : null}
 
         <li>
           {logged ? (

@@ -4,10 +4,10 @@ import { Outlet } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
 
-function App() {
+function App({ SoftwareRegistryService }) {
   return (
     <div>
-      <Navbar />
+      <Navbar SoftwareRegistryService={SoftwareRegistryService} />
       <Outlet />
     </div>
   )

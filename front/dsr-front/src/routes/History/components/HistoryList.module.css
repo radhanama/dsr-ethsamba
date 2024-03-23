@@ -1,0 +1,16 @@
+.history_list_container {
+  width: 100%;
+  height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.filter {
+  margin-bottom: 10px;
+}
+
+.filter input {
+  margin-right: 10px;
+}
